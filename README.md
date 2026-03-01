@@ -5,6 +5,7 @@
 <div align="center">
   <h3>A feature-rich, open-source external assistant for Counter-Strike 2.</h3>
   <p><i>Formerly a premium private build, now unleashed to the public.</i></p>
+  <p><i>You can download the build from: https://larpware.vercel.app/</i></p>
   
   <p>
     <a href="#features">Features</a> •
