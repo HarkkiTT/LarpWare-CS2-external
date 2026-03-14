@@ -31,7 +31,7 @@ public class Overlay : ClickableTransparentOverlay.Overlay
     public int ScreenHeight { get; private set; } = 1080;
 
 
-    public Overlay() : base("Notepad", false, 1920, 1080)
+    public Overlay(int width = 1920, int height = 1080) : base("Notepad", false, width, height)
     {
     }
 

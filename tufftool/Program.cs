@@ -111,7 +111,13 @@ internal class Program
         
         OffsetUpdater.UpdateOffsets(_mem);
 
-        var overlay = new GameOverlay();
+        int gameWidth = _mem.Read<int>(_mem.Engine2Base + (nint)Offsets.Engine2.dwWindowWidth);
+        int gameHeight = _mem.Read<int>(_mem.Engine2Base + (nint)Offsets.Engine2.dwWindowHeight);
+        if (gameWidth <= 0) gameWidth = 1920;
+        if (gameHeight <= 0) gameHeight = 1080;
+        Console.WriteLine($"[+] Game Resolution: {gameWidth}x{gameHeight}");
+
+        var overlay = new GameOverlay(gameWidth, gameHeight);
         overlay.VSync = false;
         
         _keybinds = new KeybindConfig();
@@ -189,6 +195,8 @@ internal class Program
     private class GameOverlay : Overlay
     {
         private IntPtr _overlayHwnd = IntPtr.Zero;
+
+        public GameOverlay(int width = 1920, int height = 1080) : base(width, height) { }
 
         protected override void Render()
         {

@@ -13,12 +13,6 @@ public class StandaloneRCS
     private Thread? _thread;
     
     
-    private const nint dwLocalPlayerPawn = 0x2064AE0;
-    private const nint dwViewAngles = 0x2314F98;
-    private const nint m_iHealth = 0x354;
-    private const nint m_iShotsFired = 0x270C;
-    private const nint m_aimPunchAngle = 0x16CC;
-
     private float _oldPunchX = 0f;
     private float _oldPunchY = 0f;
     
@@ -55,7 +49,7 @@ public class StandaloneRCS
                 IntPtr client = _mem.ClientBase;
                 if (client == IntPtr.Zero) { Thread.Sleep(500); continue; }
 
-                IntPtr localPlayer = _mem.Read<IntPtr>(client + dwLocalPlayerPawn);
+                IntPtr localPlayer = _mem.Read<IntPtr>(client + (nint)Offsets.Client.dwLocalPlayerPawn);
                 if (localPlayer == IntPtr.Zero) 
                 { 
                     _oldPunchX = _oldPunchY = 0f; 
@@ -64,10 +58,10 @@ public class StandaloneRCS
                     continue; 
                 }
 
-                int shots = _mem.Read<int>(localPlayer + m_iShotsFired);
-                float punchX = _mem.Read<float>(localPlayer + m_aimPunchAngle);
-                float punchY = _mem.Read<float>(localPlayer + m_aimPunchAngle + 4);
-                int health = _mem.Read<int>(localPlayer + m_iHealth);
+                int shots = _mem.Read<int>(localPlayer + (nint)Offsets.Pawn.m_iShotsFired);
+                float punchX = _mem.Read<float>(localPlayer + (nint)Offsets.Pawn.m_aimPunchAngle);
+                float punchY = _mem.Read<float>(localPlayer + (nint)Offsets.Pawn.m_aimPunchAngle + 4);
+                int health = _mem.Read<int>(localPlayer + (nint)Offsets.BaseEntity.m_iHealth);
 
                 
                 float rawDeltaX = punchX - _oldPunchX;
@@ -105,7 +99,7 @@ public class StandaloneRCS
 
                     if (Math.Abs(_smoothDeltaX) > 0.0001f || Math.Abs(_smoothDeltaY) > 0.0001f)
                     {
-                        IntPtr viewAddr = client + dwViewAngles;
+                        IntPtr viewAddr = client + (nint)Offsets.Client.dwViewAngles;
                         float currX = _mem.Read<float>(viewAddr);
                         float currY = _mem.Read<float>(viewAddr + 4);
 

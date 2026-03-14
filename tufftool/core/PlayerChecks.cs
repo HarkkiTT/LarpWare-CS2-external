@@ -6,6 +6,7 @@ namespace TuffTool.Core;
 public static class PlayerChecks
 {
     public static float FLASH_THRESHOLD = 1.0f;
+    public static int LocalPlayerIndex = -1;
 
     public static bool IsFlashed(Memory mem, IntPtr localPawn)
     {
@@ -17,19 +18,24 @@ public static class PlayerChecks
     {
         long spottedMask = mem.Read<long>(pawn + (nint)Offsets.Pawn.m_entitySpottedState + (nint)Offsets.SpottedState.m_bSpottedByMask);
         
-        int localPlayerId = mem.Read<int>(localPawn + (nint)Offsets.Pawn.m_iIDEntIndex);
-        if (localPlayerId > 0 && localPlayerId <= 64)
+        if (LocalPlayerIndex > 0 && LocalPlayerIndex <= 64)
         {
-            return (spottedMask & (1L << (localPlayerId - 1))) != 0;
+            return (spottedMask & (1L << (LocalPlayerIndex - 1))) != 0;
         }
 
-        return spottedMask > 0;
+        return false;
     }
 
     public static bool IsVisibleEsp(Memory mem, IntPtr pawn, IntPtr localPawn)
     {
         long spottedMask = mem.Read<long>(pawn + (nint)Offsets.Pawn.m_entitySpottedState + (nint)Offsets.SpottedState.m_bSpottedByMask);
-        return spottedMask > 0;
+        
+        if (LocalPlayerIndex > 0 && LocalPlayerIndex <= 64)
+        {
+            return (spottedMask & (1L << (LocalPlayerIndex - 1))) != 0;
+        }
+
+        return false;
     }
 
     public static bool IsScoped(Memory mem, IntPtr localPawn)

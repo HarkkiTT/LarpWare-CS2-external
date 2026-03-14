@@ -371,7 +371,13 @@ public sealed class Visuals
             if (pawnEntry == IntPtr.Zero) continue;
 
             IntPtr pawn = _mem.Read<IntPtr>(pawnEntry + Offsets.ENTITY_STRIDE * (pawnIdx & 0x1FF));
-            if (pawn == IntPtr.Zero || pawn == localPawn) continue;
+            if (pawn == IntPtr.Zero) continue;
+            
+            if (pawn == localPawn)
+            {
+                PlayerChecks.LocalPlayerIndex = i;
+                continue;
+            }
 
             int team = _mem.Read<int>(pawn + (nint)Offsets.BaseEntity.m_iTeamNum);
             if (!ShowTeam && team == localTeam) continue; 

@@ -90,14 +90,23 @@ public static class OffsetUpdater
                     if (classes.TryGetProperty("C_BaseEntity", out var baseEntity))
                         ApplyToClass(typeof(Offsets.BaseEntity), baseEntity.GetProperty("fields"), true);
 
+                    if (classes.TryGetProperty("CEntityIdentity", out var entityIdentity))
+                        ApplyToClass(typeof(Offsets.EntityIdentity), entityIdentity.GetProperty("fields"), true);
+
                     if (classes.TryGetProperty("C_BasePlayerPawn", out var basePlayerPawn))
                         ApplyToClass(typeof(Offsets.BasePlayerPawn), basePlayerPawn.GetProperty("fields"), true);
 
-                    if (classes.TryGetProperty("CBasePlayerController", out var controller))
-                        ApplyToClass(typeof(Offsets.Controller), controller.GetProperty("fields"), true);
+                    if (classes.TryGetProperty("CBasePlayerController", out var baseController))
+                        ApplyToClass(typeof(Offsets.Controller), baseController.GetProperty("fields"), true);
+
+                    if (classes.TryGetProperty("CCSPlayerController", out var csController))
+                        ApplyToClass(typeof(Offsets.Controller), csController.GetProperty("fields"), true);
 
                     if (classes.TryGetProperty("C_CSPlayerPawn", out var pawn))
                         ApplyToClass(typeof(Offsets.Pawn), pawn.GetProperty("fields"), true);
+
+                    if (classes.TryGetProperty("C_CSPlayerPawnBase", out var pawnBase))
+                        ApplyToClass(typeof(Offsets.Pawn), pawnBase.GetProperty("fields"), true);
 
                     if (classes.TryGetProperty("CCSPlayer_BulletServices", out var bulletServices))
                         ApplyToClass(typeof(Offsets.Pawn), bulletServices.GetProperty("fields"), true);
@@ -109,11 +118,32 @@ public static class OffsetUpdater
                     if (classes.TryGetProperty("CGameSceneNode", out var sceneNode))
                          ApplyToClass(typeof(Offsets.SceneNode), sceneNode.GetProperty("fields"), true);
                     
+                    if (classes.TryGetProperty("CSkeletonInstance", out var skeleton))
+                        ApplyToClass(typeof(Offsets.Skeleton), skeleton.GetProperty("fields"), true);
+
                     if (classes.TryGetProperty("CModelState", out var modelState))
                         ApplyToClass(typeof(Offsets.Skeleton), modelState.GetProperty("fields"), true);
-                        
-                     if (classes.TryGetProperty("EntitySpottedState_t", out var spottedState))
+                    
+                    if (classes.TryGetProperty("C_SmokeGrenadeProjectile", out var smokeGrenade))
+                        ApplyToClass(typeof(Offsets.SmokeGrenadeProjectile), smokeGrenade.GetProperty("fields"), true);
+
+                    if (classes.TryGetProperty("EntitySpottedState_t", out var spottedState))
                         ApplyToClass(typeof(Offsets.SpottedState), spottedState.GetProperty("fields"), true);
+
+                    if (classes.TryGetProperty("C_CSGameRules", out var gameRules))
+                        ApplyToClass(typeof(Offsets.GameRules), gameRules.GetProperty("fields"), true);
+                    if (classes.TryGetProperty("CCSGameRules", out var gameRules2))
+                        ApplyToClass(typeof(Offsets.GameRules), gameRules2.GetProperty("fields"), true);
+
+                    if (classes.TryGetProperty("C_PlantedC4", out var plantedC4))
+                        ApplyToClass(typeof(Offsets.PlantedC4), plantedC4.GetProperty("fields"), true);
+
+                    if (classes.TryGetProperty("C_BasePlayerWeapon", out var baseWeapon))
+                        ApplyToClass(typeof(Offsets.Weapon), baseWeapon.GetProperty("fields"), true);
+                    if (classes.TryGetProperty("C_EconItemView", out var econItem))
+                        ApplyToClass(typeof(Offsets.Weapon), econItem.GetProperty("fields"), true);
+                    if (classes.TryGetProperty("C_AttributeContainer", out var attrContainer))
+                        ApplyToClass(typeof(Offsets.Weapon), attrContainer.GetProperty("fields"), true);
                 }
             }
         }
@@ -158,16 +188,8 @@ public static class OffsetUpdater
             if (jsonObject.TryGetProperty(field.Name, out var valueProp))
             {
                  long val = 0;
-                 if (isClientDll) 
-                 {
-                    if (valueProp.ValueKind == JsonValueKind.Number)
-                        val = valueProp.GetInt64();
-                 }
-                 else 
-                 {
-                     if (valueProp.ValueKind == JsonValueKind.Number)
-                        val = valueProp.GetInt64();
-                 }
+                 if (valueProp.ValueKind == JsonValueKind.Number)
+                     val = valueProp.GetInt64();
                  
                  if (val > 0)
                  {
